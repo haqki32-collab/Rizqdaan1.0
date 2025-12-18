@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { User, Listing, Transaction, AppNotification } from '../../types';
 import { db, auth } from '../../firebaseConfig';
 import { doc, deleteDoc, updateDoc, arrayUnion, addDoc, collection } from 'firebase/firestore';
+// FIX: Named import from modular Firebase Auth SDK is correct; ensuring no hidden conflicts
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 interface ManageUsersProps {
@@ -459,7 +460,7 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         </div>
                     </div>
                     <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        <svg className="w-6 h-6 fill-none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
@@ -521,17 +522,17 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({
                                         
                                         <button onClick={() => onToggleBan(user)} className={`w-full py-2 px-3 rounded text-sm font-medium border flex items-center justify-between ${user.isBanned ? 'bg-gray-100 border-gray-300 text-gray-700' : 'bg-red-50 border-red-200 text-red-700'}`}>
                                             <span>{user.isBanned ? 'Unban User' : 'Ban / Restrict User'}</span>
-                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                                            <svg className="w-4 h-4 fill-none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
                                         </button>
 
                                         <button onClick={onResetPassword} className="w-full py-2 px-3 rounded text-sm font-medium border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-between">
                                             <span>Send Password Reset Email</span>
-                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                            <svg className="w-4 h-4 fill-none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                                         </button>
                                         
                                         <button onClick={() => onDeleteUser(user.id)} className="w-full py-2 px-3 rounded text-sm font-medium border border-red-200 bg-red-600 text-white hover:bg-red-700 flex items-center justify-between">
                                             <span>Permanently Delete Account</span>
-                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            <svg className="w-4 h-4 fill-none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                         </button>
                                     </div>
                                 </div>
@@ -727,3 +728,4 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({
 };
 
 export default ManageUsers;
+
