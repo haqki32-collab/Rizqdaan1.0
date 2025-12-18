@@ -42,6 +42,7 @@ export interface Listing {
   // New Analytics Fields
   views?: number;
   calls?: number; // Added calls tracking
+  messages?: number; // Added messages tracking
   likes?: number;
   isPromoted?: boolean;
   // Expanded Status for Admin Moderation
@@ -120,21 +121,6 @@ export interface ReferralSettings {
     isActive: boolean;
 }
 
-// Old simple request (can be deprecated or kept for legacy)
-export interface PromotionRequest {
-    id: string;
-    vendorId: string;
-    vendorName: string;
-    shopName: string;
-    service: string;
-    priceString: string;
-    contact?: string;
-    status: 'pending' | 'approved' | 'rejected';
-    createdAt: string;
-    approvedAt?: string;
-}
-
-// NEW: Advanced Campaign Interface
 export interface AdCampaign {
     id: string;
     vendorId: string;
@@ -148,15 +134,15 @@ export interface AdCampaign {
     endDate: string;
     durationDays: number;
     totalCost: number;
-    targetLocation: string; // e.g., 'All Pakistan' or 'Lahore'
-    priority?: 'high' | 'normal'; // New: Admin control for placement
+    targetLocation: string; 
+    priority?: 'high' | 'normal';
     
     // Live Analytics
     impressions: number;
     clicks: number;
-    ctr: number; // Click Through Rate
-    cpc: number; // Cost Per Click
-    conversions?: number; // New metric for advanced tracking
+    ctr: number; 
+    cpc: number; 
+    conversions?: number; 
 }
 
 export interface AppNotification {
@@ -166,8 +152,8 @@ export interface AppNotification {
     message: string;
     type: 'info' | 'success' | 'warning' | 'error';
     isRead: boolean;
-    createdAt: string; // ISO String
-    link?: string; // e.g., 'wallet-history'
+    createdAt: string; 
+    link?: string; 
 }
 
 export interface User {
@@ -180,37 +166,32 @@ export interface User {
   shopAddress: string;
   googleId?: string;
   isVerified: boolean;
-  isBanned?: boolean; // New: For banning users
+  isBanned?: boolean; 
   isAdmin?: boolean;
   profilePictureUrl?: string;
-  // New Profile Fields
   coverPictureUrl?: string;
   bio?: string;
-  followers?: string[]; // Array of User IDs who follow this vendor
-  favorites?: string[]; // Array of Listing IDs
-  savedSearches?: string[]; // Array of strings
+  followers?: string[]; 
+  favorites?: string[]; 
+  savedSearches?: string[]; 
   
-  // Referral System
-  referralCode?: string; // Their unique code (e.g. ALI-123)
-  referredBy?: string | null; // The ID of the user who invited them. Nullable to avoid undefined errors in Firestore.
+  referralCode?: string; 
+  referredBy?: string | null; 
   referralStats?: {
       totalInvited: number;
       totalEarned: number;
   };
 
-  // Admin CRM
-  adminNotes?: string; // Private notes for admin
+  adminNotes?: string; 
 
-  // Wallet & Finance Fields
   wallet?: {
     balance: number;
     totalSpend: number;
     pendingDeposit: number;
     pendingWithdrawal: number;
   };
-  walletHistory?: Transaction[]; // History of transactions
+  walletHistory?: Transaction[]; 
   
-  // Settings
   notifications?: {
       push: boolean;
       email: boolean;
@@ -218,13 +199,12 @@ export interface User {
   };
 }
 
-// --- CHAT TYPES ---
 export interface Message {
   id: string;
   senderId: string;
   receiverId: string;
   text: string;
-  timestamp: any; // Firestore Timestamp or Date
+  timestamp: any; 
   read: boolean;
 }
 
@@ -233,7 +213,7 @@ export interface ChatConversation {
   participants: string[];
   lastMessage: string;
   lastMessageTimestamp: any;
-  participantNames: Record<string, string>; // { uid: "Name" }
-  participantPics?: Record<string, string>; // { uid: "url" }
+  participantNames: Record<string, string>; 
+  participantPics?: Record<string, string>; 
   unreadCounts: Record<string, number>;
 }
