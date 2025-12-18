@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '../../types';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import * as firebaseAuth from 'firebase/auth';
+// FIX: Using modular named import for Firebase Auth to fix deleteUser property access error
+import { deleteUser } from 'firebase/auth';
 import { db, auth } from '../../firebaseConfig';
-
-const { deleteUser } = firebaseAuth;
 
 interface SettingsPageProps {
   user: User;
@@ -114,3 +113,4 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ user, onNavigate, currentTh
 };
 
 export default SettingsPage;
+
