@@ -8,7 +8,8 @@ import { db } from '../../firebaseConfig';
 interface FavoritesPageProps {
   user: User;
   listings: Listing[];
-  onNavigate: (view: 'account' | 'details', payload?: { listing?: Listing }) => void;
+  // Fix: Added 'listings' to allowed views and 'query' to optional payload to resolve TypeScript error on line 108
+  onNavigate: (view: 'account' | 'details' | 'listings', payload?: { listing?: Listing; query?: string }) => void;
 }
 
 const FavoritesPage: React.FC<FavoritesPageProps> = ({ user, listings, onNavigate }) => {
@@ -117,3 +118,4 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ user, listings, onNavigat
 };
 
 export default FavoritesPage;
+
