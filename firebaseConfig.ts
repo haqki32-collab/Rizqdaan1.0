@@ -1,9 +1,8 @@
 
 import { initializeApp, getApps, getApp } from "firebase/app";
-import * as firebaseAuth from "firebase/auth";
+// FIX: Using named imports for modular Firebase Auth SDK to fix getAuth and GoogleAuthProvider property access errors
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore, initializeFirestore } from "firebase/firestore";
-
-const { getAuth, GoogleAuthProvider } = firebaseAuth;
 
 // ==================================================================
 // CONFIGURATION LOADED
@@ -43,11 +42,11 @@ try {
         auth = getAuth(app);
         
         // 2. Enhanced Firestore Initialization for Restricted Networks
-        // We combine long polling with disabled fetch streams to bypass 10s connection timeouts.
+        // We use experimentalForceLongPolling to bypass 10s connection timeouts.
+        // Removed 'useFetchStreams' as it is no longer supported in recent Firebase versions.
         try {
             db = initializeFirestore(app, {
                 experimentalForceLongPolling: true,
-                useFetchStreams: false, // Prevents hanging on stream setup
             });
             console.log("Firestore initialized with Long Polling.");
         } catch (e: any) {
