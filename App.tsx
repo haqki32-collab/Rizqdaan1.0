@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import * as firebaseAuth from 'firebase/auth';
+// FIX: Using modular named imports for Firebase Auth to resolve property access errors on namespace
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, onSnapshot, Unsubscribe, deleteDoc, updateDoc, arrayUnion, query, where, getDocs, increment } from 'firebase/firestore';
 import { auth, db, isFirebaseConfigured } from './firebaseConfig';
 
@@ -26,8 +27,6 @@ import WalletHistoryPage from './components/pages/WalletHistoryPage';
 import NotificationsPage from './components/pages/NotificationsPage'; 
 import { Listing, User, Category, Transaction, ReferralSettings } from './types';
 import { MOCK_LISTINGS, CATEGORIES as DEFAULT_CATEGORIES } from './constants';
-
-const { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } = firebaseAuth;
 
 type View = 'home' | 'listings' | 'details' | 'vendor-dashboard' | 'auth' | 'account' | 'subcategories' | 'chats' | 'add-listing' | 'my-ads' | 'vendor-analytics' | 'favorites' | 'saved-searches' | 'edit-profile' | 'settings' | 'admin' | 'vendor-profile' | 'promote-business' | 'add-balance' | 'referrals' | 'wallet-history' | 'notifications';
 type NavigatePayload = {
@@ -369,23 +368,19 @@ const App: React.FC = () => {
         {view === 'listings' && <ListingsPage listings={listingsDB} onNavigate={handleNavigate} initialSearchTerm={searchQuery} />}
         {view === 'subcategories' && selectedCategory && <SubCategoryPage category={selectedCategory} onNavigate={handleNavigate} onListingNavigate={(v, q) => handleNavigate(v, { query: q })} />}
         {view === 'details' && selectedListing && <ListingDetailsPage listing={selectedListing} listings={listingsDB} user={user} onNavigate={handleNavigate} />}
-        {/* Fix: Added explicit casts to View type to resolve string assignability errors in component callbacks */}
         {view === 'vendor-dashboard' && <VendorDashboard initialTab={initialVendorTab} listings={listingsDB} user={user} onNavigate={(v, payload) => handleNavigate(v as View, payload)} />}
         {view === 'vendor-profile' && selectedVendorId && <VendorProfilePage vendorId={selectedVendorId} currentUser={user} listings={listingsDB} onNavigate={(v, p) => handleNavigate(v as View, p)} />}
         {view === 'auth' && <AuthPage onLogin={handleLogin} onSignup={handleSignup} onVerifyAndLogin={handleVerifyAndLogin} />}
         {view === 'account' && user && <AccountPage user={user} listings={listingsDB} onLogout={() => { signOut(auth); setUser(null); setView('home'); }} onNavigate={handleNavigate} />}
         {view === 'favorites' && user && <FavoritesPage user={user} listings={listingsDB} onNavigate={handleNavigate} />}
         {view === 'saved-searches' && user && <SavedSearchesPage searches={user.savedSearches || []} onNavigate={handleNavigate} />}
-        {/* Fix: Wrapped handleNavigate in an arrow function with explicit View cast for EditProfilePage compatibility */}
         {view === 'edit-profile' && user && <EditProfilePage user={user} onNavigate={(v, p) => handleNavigate(v as View, p)} />}
         {view === 'settings' && user && <SettingsPage user={user} onNavigate={handleNavigate} currentTheme={theme} toggleTheme={toggleTheme} onLogout={() => { signOut(auth); setUser(null); setView('home'); }} />}
         {view === 'referrals' && user && <ReferralPage user={user} onNavigate={handleNavigate} />}
         {view === 'add-balance' && user && <AddFundsPage user={user} onNavigate={handleNavigate} />}
         {view === 'wallet-history' && user && <WalletHistoryPage user={user} onNavigate={handleNavigate} />}
-        {/* Fix: Explicitly cast 'v' parameter to type View to match handleNavigate's expected parameter type on line 372 */}
         {view === 'notifications' && user && <NotificationsPage user={user} onNavigate={(v) => handleNavigate(v as View)} />}
         {view === 'chats' && user && <ChatPage currentUser={user} targetUser={chatTargetUser} onNavigate={handleNavigate} />}
-        {/* Fix: Added arrow wrapper with View cast for AdminPanel's onNavigate prop */}
         {view === 'admin' && user?.isAdmin && <AdminPanel users={usersDB} listings={listingsDB} onUpdateUserVerification={handleAdminUpdateUserVerification} onDeleteListing={handleAdminDeleteListing} onImpersonate={handleImpersonate} onNavigate={(v, p) => handleNavigate(v as View, p)} />}
       </main>
       <BottomNavBar onNavigate={handleNavigate} activeView={view} />
@@ -394,4 +389,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
