@@ -369,20 +369,24 @@ const App: React.FC = () => {
         {view === 'listings' && <ListingsPage listings={listingsDB} onNavigate={handleNavigate} initialSearchTerm={searchQuery} />}
         {view === 'subcategories' && selectedCategory && <SubCategoryPage category={selectedCategory} onNavigate={handleNavigate} onListingNavigate={(v, q) => handleNavigate(v, { query: q })} />}
         {view === 'details' && selectedListing && <ListingDetailsPage listing={selectedListing} listings={listingsDB} user={user} onNavigate={handleNavigate} />}
-        {view === 'vendor-dashboard' && <VendorDashboard initialTab={initialVendorTab} listings={listingsDB} user={user} onNavigate={(v, payload) => handleNavigate(v, payload)} />}
-        {view === 'vendor-profile' && selectedVendorId && <VendorProfilePage vendorId={selectedVendorId} currentUser={user} listings={listingsDB} onNavigate={handleNavigate} />}
+        {/* Fix: Added explicit casts to View type to resolve string assignability errors in component callbacks */}
+        {view === 'vendor-dashboard' && <VendorDashboard initialTab={initialVendorTab} listings={listingsDB} user={user} onNavigate={(v, payload) => handleNavigate(v as View, payload)} />}
+        {view === 'vendor-profile' && selectedVendorId && <VendorProfilePage vendorId={selectedVendorId} currentUser={user} listings={listingsDB} onNavigate={(v, p) => handleNavigate(v as View, p)} />}
         {view === 'auth' && <AuthPage onLogin={handleLogin} onSignup={handleSignup} onVerifyAndLogin={handleVerifyAndLogin} />}
         {view === 'account' && user && <AccountPage user={user} listings={listingsDB} onLogout={() => { signOut(auth); setUser(null); setView('home'); }} onNavigate={handleNavigate} />}
         {view === 'favorites' && user && <FavoritesPage user={user} listings={listingsDB} onNavigate={handleNavigate} />}
         {view === 'saved-searches' && user && <SavedSearchesPage searches={user.savedSearches || []} onNavigate={handleNavigate} />}
-        {view === 'edit-profile' && user && <EditProfilePage user={user} onNavigate={handleNavigate} />}
+        {/* Fix: Wrapped handleNavigate in an arrow function with explicit View cast for EditProfilePage compatibility */}
+        {view === 'edit-profile' && user && <EditProfilePage user={user} onNavigate={(v, p) => handleNavigate(v as View, p)} />}
         {view === 'settings' && user && <SettingsPage user={user} onNavigate={handleNavigate} currentTheme={theme} toggleTheme={toggleTheme} onLogout={() => { signOut(auth); setUser(null); setView('home'); }} />}
         {view === 'referrals' && user && <ReferralPage user={user} onNavigate={handleNavigate} />}
         {view === 'add-balance' && user && <AddFundsPage user={user} onNavigate={handleNavigate} />}
         {view === 'wallet-history' && user && <WalletHistoryPage user={user} onNavigate={handleNavigate} />}
-        {view === 'notifications' && user && <NotificationsPage user={user} onNavigate={(view) => handleNavigate(view as View)} />}
+        {/* Fix: Explicitly cast 'v' parameter to type View to match handleNavigate's expected parameter type on line 372 */}
+        {view === 'notifications' && user && <NotificationsPage user={user} onNavigate={(v) => handleNavigate(v as View)} />}
         {view === 'chats' && user && <ChatPage currentUser={user} targetUser={chatTargetUser} onNavigate={handleNavigate} />}
-        {view === 'admin' && user?.isAdmin && <AdminPanel users={usersDB} listings={listingsDB} onUpdateUserVerification={handleAdminUpdateUserVerification} onDeleteListing={handleAdminDeleteListing} onImpersonate={handleImpersonate} onNavigate={handleNavigate} />}
+        {/* Fix: Added arrow wrapper with View cast for AdminPanel's onNavigate prop */}
+        {view === 'admin' && user?.isAdmin && <AdminPanel users={usersDB} listings={listingsDB} onUpdateUserVerification={handleAdminUpdateUserVerification} onDeleteListing={handleAdminDeleteListing} onImpersonate={handleImpersonate} onNavigate={(v, p) => handleNavigate(v as View, p)} />}
       </main>
       <BottomNavBar onNavigate={handleNavigate} activeView={view} />
     </div>
@@ -390,3 +394,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
