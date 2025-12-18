@@ -1,11 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { User } from '../../types';
 import { db, auth } from '../../firebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
-import * as firebaseAuth from 'firebase/auth';
+// FIX: Using modular named import for Firebase Auth to fix updateProfile property access error
+import { updateProfile } from 'firebase/auth';
 import { CLOUDINARY_URL, CLOUDINARY_UPLOAD_PRESET } from '../../constants';
-
-const { updateProfile } = firebaseAuth;
 
 // --- COMPRESSION UTILITY ---
 const compressImage = async (file: File): Promise<File> => {
