@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { User } from '../../types';
 import { PAKISTAN_LOCATIONS } from '../../constants';
 import { auth, googleProvider, db } from '../../firebaseConfig';
-import * as firebaseAuth from 'firebase/auth';
+// FIX: Using named imports for modular Firebase Auth SDK to fix "Property does not exist" errors
+import { signInWithPopup, sendPasswordResetEmail, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-
-const { signInWithPopup, sendPasswordResetEmail, signInWithPhoneNumber, RecaptchaVerifier } = firebaseAuth;
 
 type AuthStep = 'form' | 'otp' | 'google_details';
 
